@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+#include<time.h>
+void imprimir(int n, int x, int y, int dir);
+int main ()
+{
+int tablero[4][3]=//definimos que 5 es una barrera y -1 , 1 son las recompensas
+{
+{0,0,0},
+{0,5,0},
+{0,0,0},
+{0,-1,1}
+};
+
+int x,y; //declaramos coordenadas para saber en donde se esta moviendo el robot 
+int n;//numero de robots 
+int nPasos;
+int recompensa;//sera el valor que tome el robot cuando caiga en alguna de las casillas buscadas
+int dir;//para saber hacia donde se mueve el robot aleatoriamente
+printf("Cuantos robots tontos quieres: ");
+scanf("%d",&n);
+int robots[n];
+int quemados=0, chidos=0;
+srand(time(NULL));//hacemos mas aleatorio el proceso de seleccion de movimientos 
+for(int i=0; i<n; i++){//ciclo para n robots que cada uno busque las casillas a las que se va a mover
+	x=0;
+	nPasos=0;
+	y=0;//inicializamos coordenadas para que empiece el programa en la parte superior izquierda y se mueva aleatoriamente 
+	recompensa=0;
+	printf("El robot %d emepezo en (0,0)\n",i+1);
+	do{
+		
+		dir=rand()%5;//valor aleatorio entre 1 y 4
+		switch (dir){//seleccion hacia donde se va 
+			case 1:
+				//todas las condiciones preguntan si la posicion a donde se va a mover vale mas o igual que 0(para saber que es una posicion permitida) y que sea diferente de 5 que es nuestra pared
+					
+				if(y-1>=0 && tablero[x][y-1]!=5){//arriba
+					y--;
+					imprimir(i,x,y,dir);
+					nPasos++;
+				}
+			break;
+			case 2:
+				if(y+1<=3 && tablero[x][y+1]!=5){//abajo
+					y++;
+				imprimir(i,x,y,dir);
+				nPasos++;
+				}
+			break;
+			case 3:
+				if(x-1>=0 && tablero[x-1][y]!=5){//izquierda
+					x--;
+					imprimir(i,x,y,dir);	
+					nPasos++;
+				}
+			break;
+			case 4:
+				if(x+1<=2 && tablero[x+1][y]!=5){//derecha
+					x++;
+					imprimir(i,x,y,dir);
+					nPasos++;
+				}
+			break;
+			
+		}
+		
+			recompensa=tablero[y][x];//una vez que sale del switch almacena el valor de la casilla donde esta para saber si esta en la recompeza deseada
+		
+		
+	}while(recompensa==0);//si sigue en una casilla sin recompenza se repite el proceso 
+	robots[i]=recompensa;
+	if(robots[i]==-1){//validamos cuantos se quemaron y lo mostramos
+		printf("El robot no: %d se quemo.\n",i+1);
+		quemados++;
+	}else{
+			printf("El robot no: %d gano el juego.\n",i+1);
+		chidos++;
+	}
+	printf("\n%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c    Y dio %d pasos\n\n",178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,178,nPasos);
+	
+}
+printf("Se quemaron %d robots.\n",quemados);
+	printf("Llegaron %d robots a la recompensa.\n",chidos);
+system("PAUSE");
+return 0;
+}
+void imprimir(int n, int x, int y, int dir){
+printf("El robot %d se movio hacia ",n+1);
+switch (dir){
+case 1:
+printf("arriba ");
+break;
+case 2:
+printf("abajo ");
+break;
+case 3:
+printf("la izquierda ");
+break;
+case 4:
+printf("la derecha ");
+break;
+}
+printf("a la coordenada (%d,%d)\n",x,y);
+}
